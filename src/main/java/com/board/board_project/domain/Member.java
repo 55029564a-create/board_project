@@ -1,4 +1,4 @@
-package com.board.board_project.entity;
+package com.board.board_project.domain;
 
 
 import lombok.AllArgsConstructor;
@@ -17,6 +17,6 @@ public class Member {
     private String email;
     private String pwd;
     private String name;
-    private String nickName;
-    private LocalDateTime createAt;
+    private String nickname;
+    private LocalDateTime createdAt;
 }
