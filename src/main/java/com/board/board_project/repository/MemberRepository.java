@@ -30,7 +30,7 @@ public class MemberRepository {
                             rs.getString(4),
                             rs.getString(5),
                             rs.getTimestamp(6).toLocalDateTime()
-                    )
+                    ), email
                 );
             return member;
         } catch (EmptyResultDataAccessException e) {
@@ -49,7 +49,7 @@ public class MemberRepository {
                             rs.getString(4),
                             rs.getString(5),
                             rs.getTimestamp(6).toLocalDateTime()
-                    )
+                    ), nickname
                     );
             return member;
         } catch (EmptyResultDataAccessException e) {

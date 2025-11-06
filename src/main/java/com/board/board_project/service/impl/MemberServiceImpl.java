@@ -2,7 +2,9 @@ package com.board.board_project.service.impl;
 
 
 import com.board.board_project.domain.Member;
+import com.board.board_project.dto.member.request.LoginReq;
 import com.board.board_project.dto.member.request.SignUpReq;
+import com.board.board_project.dto.member.response.LoginRes;
 import com.board.board_project.dto.member.response.SignUpRes;
 import com.board.board_project.repository.MemberRepository;
 import com.board.board_project.service.MemberService;
@@ -31,9 +33,30 @@ public class MemberServiceImpl implements MemberService {
             signUpRes.setSignUp(false);
             signUpRes.setNicknameError("이미 사용중인 닉네임 입니다.");
         }
+        if (!signUpRes.isSignUp()) return signUpRes;
         String encodePwd = passwordEncoder.encode(signUpReq.getPwd());
         signUpReq.setPwd(encodePwd);
         memberRepository.insertMember(signUpReq);
         return signUpRes;
+    }
+
+    @Override
+    public LoginRes login(LoginReq loginReq) {
+        Member member = memberRepository.findByEmail(loginReq.getEmail());
+        LoginRes loginRes = new LoginRes();
+        if (member != null) {
+           if (passwordEncoder.matches(loginReq.getPwd(), member.getPwd())){
+               loginRes.setId(member.getId());
+               loginRes.setEmail(member.getEmail());
+               loginRes.setName(member.getName());
+               loginRes.setNickname(member.getNickname());
+               loginRes.setLogin(true);
+
+               return loginRes;
+           }
+        }
+        loginRes.setLogin(false);
+        loginRes.setLoginFail("회원 정보를 다시 확인해 주세요!");
+        return loginRes;
     }
 }
